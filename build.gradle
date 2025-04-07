@@ -1,0 +1,87 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'signing'
+}
+
+group = 'org.omnimc.tests'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = 'mavencentraltest'
+            from components.java
+
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
+
+            pom {
+                name = 'Maven Test'
+                description = 'This is a test for Maven Central publishing.'
+                url = 'https://www.omnimc.org'
+
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = 'caden'
+                        name = 'Caden'
+                        email = 'cadencasteel10@gmail.com'
+                    }
+                }
+
+                scm {
+                    connection = 'scm:git:git://github.com/YourUsername/your-repo.git'
+                    developerConnection = 'scm:git:ssh://github.com:YourUsername/your-repo.git'
+                    url = 'https://github.com/YourUsername/your-repo'
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name = "OSSRH"
+            url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+
+            credentials {
+                username = findProperty("ossrhUsername") ?: System.getenv("OSSRH_USERNAME")
+                password = findProperty("ossrhPassword") ?: System.getenv("OSSRH_PASSWORD")
+            }
+        }
+    }
+}
+
+signing {
+    useInMemoryPgpKeys(
+            findProperty("signing.keyId"),
+            findProperty("signing.key"),
+            findProperty("signing.password")
+    )
+    sign publishing.publications.mavenJava
+}
