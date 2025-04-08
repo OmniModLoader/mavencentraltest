@@ -18,6 +18,8 @@ jobs:
           server-password: MAVEN_PASSWORD
           gpg-private-key: ${{ secrets.GPG_KEY }}
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
+      - name: Make Gradle wrapper executable
+        run: chmod +x ./gradlew
       - name: Set version
         run: |
           VERSION=${{ github.event.release.tag_name }}
