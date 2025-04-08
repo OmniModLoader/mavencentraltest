@@ -79,9 +79,8 @@ publishing {
 
 signing {
     useInMemoryPgpKeys(
-            findProperty("signing.keyId"),
-            findProperty("signing.key"),
-            findProperty("signing.password")
+            System.getenv("GPG_KEY"),
+            System.getenv("GPG_PASSPHRASE")
     )
     sign publishing.publications.mavenJava
 }
