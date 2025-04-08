@@ -19,9 +19,12 @@ jobs:
           gpg-private-key: ${{ secrets.GPG_KEY }}
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
       - name: Set version
-        run: mvn versions:set -DnewVersion=${{ github.event.release.tag_name }}
+        run: |
+          VERSION=${{ github.event.release.tag_name }}
+          ./gradlew -Pversion=$VERSION
+        #run: mvn versions:set -DnewVersion=${{ github.event.release.tag_name }}
       - name: Publish package
-        run: mvn -P release --batch-mode deploy -DskipTests
+        run: ./gradlew publish --no-daemon --stacktrace --info --warning-mode=all
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
