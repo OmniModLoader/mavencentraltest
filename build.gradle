@@ -70,8 +70,8 @@ publishing {
             url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
 
             credentials {
-                username = findProperty("ossrhUsername") ?: System.getenv("OSSRH_USERNAME")
-                password = findProperty("ossrhPassword") ?: System.getenv("OSSRH_PASSWORD")
+                username = findProperty("ossrhUsername") ?: System.getenv("MAVEN_USERNAME")
+                password = findProperty("ossrhPassword") ?: System.getenv("MAVEN_PASSWORD")
             }
         }
     }
@@ -84,6 +84,6 @@ signing {
             System.getenv("GPG_KEY"),
             System.getenv("MAVEN_GPG_PASSPHRASE")
     )
-    
+
     sign publishing.publications.mavenJava
 }
