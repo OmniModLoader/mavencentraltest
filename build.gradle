@@ -4,7 +4,7 @@ plugins {
     id 'signing'
 }
 
-group = 'org.omnimc.tests'
+group = 'org.omnimc'
 version = '1.0.0'
 
 repositories {
