@@ -78,9 +78,12 @@ publishing {
 }
 
 signing {
+    useGpgCmd()
+
     useInMemoryPgpKeys(
             System.getenv("GPG_KEY"),
             System.getenv("MAVEN_GPG_PASSPHRASE")
     )
+    
     sign publishing.publications.mavenJava
 }
