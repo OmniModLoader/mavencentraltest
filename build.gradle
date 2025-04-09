@@ -56,9 +56,9 @@ publishing {
                 }
 
                 scm {
-                    connection = 'scm:git:git://github.com/YourUsername/your-repo.git'
-                    developerConnection = 'scm:git:ssh://github.com:YourUsername/your-repo.git'
-                    url = 'https://github.com/YourUsername/your-repo'
+                    connection = 'scm:git:git://github.com/OmniModLoader/mavencentraltest.git'
+                    developerConnection = 'scm:git:ssh://github.com:OmniModLoader/mavencentraltest.git'
+                    url = 'https://github.com/OmniModLoader/mavencentraltest'
                 }
             }
         }
