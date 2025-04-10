@@ -64,6 +64,17 @@ mavenPublishing {
     }
 }
 
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+
+            // Add the sources and javadoc JARs automatically created by the java plugin
+            artifact tasks.sourcesJar
+            artifact tasks.javadocJar
+        }
+    }
+}
 /*publishing {
     publications {
         mavenJava(MavenPublication) {
