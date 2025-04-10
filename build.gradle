@@ -1,7 +1,9 @@
+import com.vanniktech.maven.publish.SonatypeHost
+
 plugins {
     id 'java'
-    id 'maven-publish'
-    id 'signing'
+    id "com.vanniktech.maven.publish" version "0.31.0-rc2"
+    //id 'signing'
 }
 
 group = 'org.omnimc'
@@ -27,7 +29,42 @@ java {
     withJavadocJar()
 }
 
-publishing {
+mavenPublishing {
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+
+    signAllPublications()
+
+    coordinates(group, "maven-test", version)
+
+    pom {
+        name = "Maven Test"
+        description = "This is a test for maven central publishing"
+        url = "https://www.omnimc.org"
+        licenses {
+            license {
+                name = "The Apache License, Version 2.0"
+                url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                distribution = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+            }
+        }
+
+        developers {
+            developer {
+                id = "omnimc"
+                name = "OmniMC"
+                url = "https://www.omnimc.org"
+            }
+        }
+
+        scm {
+            connection = 'scm:git:git://github.com/OmniModLoader/mavencentraltest.git'
+            developerConnection = 'scm:git:ssh://github.com:OmniModLoader/mavencentraltest.git'
+            url = 'https://github.com/OmniModLoader/mavencentraltest'
+        }
+    }
+}
+
+/*publishing {
     publications {
         mavenJava(MavenPublication) {
             artifactId = 'mavencentraltest'
@@ -84,8 +121,9 @@ publishing {
             }
         }
     }
-}
+}*/
 
+/*
 signing {
     useGpgCmd()
 
@@ -95,4 +133,4 @@ signing {
     )
 
     sign publishing.publications.mavenJava
-}
+}*/
