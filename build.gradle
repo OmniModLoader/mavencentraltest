@@ -24,17 +24,10 @@ test {
     useJUnitPlatform()
 }
 
-java {
-    withSourcesJar()
-    withJavadocJar()
-}
-
 mavenPublishing {
-    publishToMavenCentral()
-
-    signAllPublications()
-
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
     coordinates(group, "maven-test", version)
+    signAllPublications()
 
     pom {
         name = "Maven Test"
@@ -64,17 +57,6 @@ mavenPublishing {
     }
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-
-            // Add the sources and javadoc JARs automatically created by the java plugin
-            artifact tasks.sourcesJar
-            artifact tasks.javadocJar
-        }
-    }
-}
 /*publishing {
     publications {
         mavenJava(MavenPublication) {
