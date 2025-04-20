@@ -1,13 +1,14 @@
-import com.vanniktech.maven.publish.SonatypeHost
+import net.thebugmc.gradle.sonatypepublisher.PublishingType
 
 plugins {
     id 'java'
-    id "com.vanniktech.maven.publish" version "0.31.0-rc2"
+    id("net.thebugmc.gradle.sonatype-central-portal-publisher") version "1.2.4"
     //id 'signing'
 }
 
 group = 'org.omnimc'
-version = '1.0.0'
+version = '1.1.0'
+description = "A maven test that needs help"
 
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
@@ -24,7 +25,47 @@ test {
     useJUnitPlatform()
 }
 
-mavenPublishing {
+signing {
+    useInMemoryPgpKeys(gpgKey, gpgPassword)
+}
+
+centralPortal {
+    username = mavenCentralUsername
+    password = mavenCentralPassword
+
+    name = "maventest"
+
+    publishingType = PublishingType.USER_MANAGED
+
+    pom {
+        name = "Maven Test"
+        description = "This is a test for maven central publishing"
+        url = "https://www.omnimc.org"
+        licenses {
+            license {
+                name = "The Apache License, Version 2.0"
+                url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                distribution = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+            }
+        }
+
+        developers {
+            developer {
+                id = "omnimc"
+                name = "OmniMC"
+                url = "https://www.omnimc.org"
+            }
+        }
+
+        scm {
+            connection = 'scm:git:git://github.com/OmniModLoader/mavencentraltest.git'
+            developerConnection = 'scm:git:ssh://github.com:OmniModLoader/mavencentraltest.git'
+            url = 'https://github.com/OmniModLoader/mavencentraltest'
+        }
+    }
+}
+
+/*mavenPublishing {
     publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
     coordinates(group, "maven-test", version)
     signAllPublications()
@@ -55,75 +96,5 @@ mavenPublishing {
             url = 'https://github.com/OmniModLoader/mavencentraltest'
         }
     }
-}
-
-/*publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifactId = 'mavencentraltest'
-            from components.java
-
-            versionMapping {
-                usage('java-api') {
-                    fromResolutionOf('runtimeClasspath')
-                }
-                usage('java-runtime') {
-                    fromResolutionResult()
-                }
-            }
-
-            pom {
-                name = 'Maven Test'
-                description = 'This is a test for Maven Central publishing.'
-                url = 'https://www.omnimc.org'
-
-                licenses {
-                    license {
-                        name = 'The Apache License, Version 2.0'
-                        url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
-                    }
-                }
-
-                developers {
-                    developer {
-                        id = 'caden'
-                        name = 'Caden'
-                        email = 'cadencasteel10@gmail.com'
-                    }
-                }
-
-                scm {
-                    connection = 'scm:git:git://github.com/OmniModLoader/mavencentraltest.git'
-                    developerConnection = 'scm:git:ssh://github.com:OmniModLoader/mavencentraltest.git'
-                    url = 'https://github.com/OmniModLoader/mavencentraltest'
-                }
-            }
-        }
-    }
-
-    repositories {
-        maven {
-            def releaseRepo = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-            def snapshotRepo = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
-
-            url = isReleaseVersion ? releaseRepo : snapshotRepo
-
-            credentials {
-                username = findProperty("ossrhUsername") ?: System.getenv("MAVEN_USERNAME")
-                password = findProperty("ossrhPassword") ?: System.getenv("MAVEN_PASSWORD")
-            }
-        }
-    }
 }*/
 
-/*
-signing {
-    useGpgCmd()
-
-    useInMemoryPgpKeys(
-            System.getenv("GPG_KEY"),
-            System.getenv("MAVEN_GPG_PASSPHRASE")
-    )
-
-    sign publishing.publications.mavenJava
-}*/
