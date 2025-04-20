@@ -26,7 +26,9 @@ test {
 }
 
 signing {
-    useInMemoryPgpKeys(gpgKey, gpgPassword)
+    def signingKey = findProperty("signingKey")
+    def signingPassword = findProperty("signingPassword")
+    useInMemoryPgpKeys(signingKey, signingPassword)
 }
 
 centralPortal {
