@@ -7,10 +7,8 @@ plugins {
 }
 
 group = 'org.omnimc'
-version = '1.1.0'
+version = project.findProperty("version") ?: "1.0.0-SNAPSHOT-BUILD-ONLY" // version 1.1.0
 description = "A maven test that needs help"
-
-ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
 repositories {
     mavenCentral()
@@ -28,10 +26,15 @@ test {
 signing {
     def signingKey = findProperty("signingKey")
     def signingPassword = findProperty("signingPassword")
+    //noinspection GroovyAssignabilityCheck
     useInMemoryPgpKeys(signingKey, signingPassword)
 }
 
 centralPortal {
+    if (version.toString().endsWith("BUILD-ONLY")) {
+        throw new GradleException("You cannot publish a build-only version. You may have not set the version.")
+    }
+
     username = mavenCentralUsername
     password = mavenCentralPassword
 
@@ -66,37 +69,3 @@ centralPortal {
         }
     }
 }
-
-/*mavenPublishing {
-    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
-    coordinates(group, "maven-test", version)
-    signAllPublications()
-
-    pom {
-        name = "Maven Test"
-        description = "This is a test for maven central publishing"
-        url = "https://www.omnimc.org"
-        licenses {
-            license {
-                name = "The Apache License, Version 2.0"
-                url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
-                distribution = "http://www.apache.org/licenses/LICENSE-2.0.txt"
-            }
-        }
-
-        developers {
-            developer {
-                id = "omnimc"
-                name = "OmniMC"
-                url = "https://www.omnimc.org"
-            }
-        }
-
-        scm {
-            connection = 'scm:git:git://github.com/OmniModLoader/mavencentraltest.git'
-            developerConnection = 'scm:git:ssh://github.com:OmniModLoader/mavencentraltest.git'
-            url = 'https://github.com/OmniModLoader/mavencentraltest'
-        }
-    }
-}*/
-

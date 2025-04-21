@@ -17,8 +17,7 @@ jobs:
         run: chmod +x ./gradlew
       - name: Set version
         run: |
-          VERSION=${{ github.event.release.tag_name }}
-          ./gradlew -Pversion=$VERSION
+          ./gradlew -Pversion=${{ github.event.release.tag_name }}
       - name: Publish package
         run: ./gradlew publishToCentralPortal --no-daemon --stacktrace --info --warning-mode=all
         env:
